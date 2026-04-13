@@ -1,8 +1,17 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 export function HeroSection() {
+  const router = useRouter();
+
+  const handleStartBuilding = () => {
+    // 生成一个随机的 roomId 并导航到搭建页面
+    const roomId = Math.random().toString(36).substring(2, 15);
+    router.push(`/builder/${roomId}`);
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-background-primary to-background-secondary z-0"></div>
@@ -56,7 +65,10 @@ export function HeroSection() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <button className="glass-button px-8 py-4 text-lg font-semibold text-white rounded-full hover:bg-accent-primary transition-all">
+          <button 
+            className="glass-button px-8 py-4 text-lg font-semibold text-white rounded-full hover:bg-accent-primary transition-all"
+            onClick={handleStartBuilding}
+          >
             开始搭建
           </button>
         </motion.div>
