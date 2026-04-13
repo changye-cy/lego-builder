@@ -195,7 +195,7 @@ export function BuilderCanvas({ handTrackingResult }: BuilderCanvasProps) {
   }, [ghostBrick.position, currentBrickType, currentBrickColor, addBrick]);
 
   return (
-    <div className="absolute inset-0">
+    <div className="w-full h-full">
       <Canvas
         camera={{ position: [5, 5, 5], fov: 50 }}
         gl={{ antialias: true }}
