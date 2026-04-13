@@ -1,6 +1,12 @@
+'use client';
 import React from 'react';
+import { CameraFeed } from '@/components/builder/CameraFeed';
+import { BuilderCanvas } from '@/components/builder/BuilderCanvas';
+import { useBuilderStore } from '@/lib/store/builder-store';
 
 export default function BuilderPage() {
+  const { currentBrickType, currentBrickColor, setCurrentBrickType, setCurrentBrickColor } = useBuilderStore();
+
   return (
     <div className="min-h-screen bg-background-primary flex flex-col">
       {/* 顶部导航栏 */}
@@ -30,7 +36,11 @@ export default function BuilderPage() {
             <h3 className="font-semibold mb-3">积木类型</h3>
             <div className="grid grid-cols-2 gap-2">
               {['1x1', '1x2', '2x2', '2x4', 'plate-1x2', 'plate-2x4'].map((type) => (
-                <button key={type} className="glass-button p-2 rounded-md text-center text-sm">
+                <button 
+                  key={type} 
+                  className={`glass-button p-2 rounded-md text-center text-sm ${currentBrickType === type ? 'bg-accent-primary text-white' : ''}`}
+                  onClick={() => setCurrentBrickType(type as any)}
+                >
                   {type}
                 </button>
               ))}
@@ -40,7 +50,12 @@ export default function BuilderPage() {
             <h3 className="font-semibold mb-3">颜色</h3>
             <div className="grid grid-cols-5 gap-2">
               {['#E3000B', '#0057A8', '#00852B', '#FFD700', '#FF6600', '#FFFFFF', '#1B2A34', '#A5499B', '#00BCD4', '#795548'].map((color) => (
-                <button key={color} className="w-8 h-8 rounded-md border-2 border-transparent hover:border-white" style={{ backgroundColor: color }} />
+                <button 
+                  key={color} 
+                  className={`w-8 h-8 rounded-md border-2 ${currentBrickColor === color ? 'border-white' : 'border-transparent hover:border-white'}`}
+                  style={{ backgroundColor: color }}
+                  onClick={() => setCurrentBrickColor(color as any)}
+                />
               ))}
             </div>
           </div>
@@ -58,20 +73,11 @@ export default function BuilderPage() {
 
         {/* 中间 3D 画布 */}
         <div className="flex-1 relative">
-          {/* 3D 画布占位 */}
-          <div className="absolute inset-0 bg-background-tertiary flex items-center justify-center">
-            <div className="text-center">
-              <div className="text-6xl mb-4">🎮</div>
-              <h3 className="text-xl font-semibold mb-2">3D 积木搭建画布</h3>
-              <p className="text-text-secondary">手势控制：捏合抓取，移动放置</p>
-            </div>
-          </div>
+          <BuilderCanvas />
           
           {/* 摄像头预览窗口 */}
           <div className="absolute bottom-4 left-4 glass-panel p-2 rounded-lg">
-            <div className="w-32 h-24 bg-background-tertiary rounded-md flex items-center justify-center">
-              <div className="text-sm text-text-secondary">摄像头预览</div>
-            </div>
+            <CameraFeed />
           </div>
         </div>
 
