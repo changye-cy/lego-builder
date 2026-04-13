@@ -1,13 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import { CameraFeed } from '@/components/builder/CameraFeed';
 import { BuilderCanvas } from '@/components/builder/BuilderCanvas';
 import { useBuilderStore } from '@/lib/store/builder-store';
-import { HandTrackingResult } from '@/types/gesture';
 
 export default function BuilderPage() {
   const { currentBrickType, currentBrickColor, setCurrentBrickType, setCurrentBrickColor } = useBuilderStore();
-  const [handTrackingResult, setHandTrackingResult] = useState<HandTrackingResult>({ hands: [], timestamp: Date.now() });
 
   return (
     <div className="min-h-screen gradient-bg text-foreground flex flex-col">
@@ -102,15 +99,10 @@ export default function BuilderPage() {
             <div className="decorative-element bg-secondary w-80 h-80 bottom-1/4 right-1/4"></div>
           </div>
           
-          {/* 摄像头预览窗口（左上角） */}
-          <div className="absolute top-6 left-6 z-10 glass-panel inner-border shadow-lg shadow-black/30">
-            <div className="absolute -top-3 left-4 bg-card px-2 text-xs font-medium">
-              Camera
-            </div>
-            <CameraFeed onResults={setHandTrackingResult} />
+          {/* 3D 搭建区域 */}
+          <div className="w-full h-full">
+            <BuilderCanvas />
           </div>
-          
-          <BuilderCanvas handTrackingResult={handTrackingResult} />
         </div>
 
         {/* 右侧面板 */}
@@ -166,7 +158,7 @@ export default function BuilderPage() {
 
       {/* 底部工具栏 */}
       <footer className="glass-panel border-t border-border py-3 px-8 flex justify-center gap-4">
-        {['Gesture Guide', 'Undo', 'Redo', 'Save', 'Share', 'Fullscreen'].map((item) => (
+        {['Undo', 'Redo', 'Save', 'Share', 'Fullscreen'].map((item) => (
           <button 
             key={item} 
             className="btn-secondary px-4 py-2 text-sm font-medium"

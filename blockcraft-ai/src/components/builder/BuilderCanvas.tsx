@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import { useBuilderStore } from '@/lib/store/builder-store';
 import { BrickType, BrickColor, BRICK_TEMPLATES } from '@/types/brick';
 import { createLegoBrickGeometry } from '@/lib/three/brick-geometry';
-import { HandTrackingResult } from '@/types/gesture';
+
 
 interface LegoBrickProps {
   id: string;
@@ -150,11 +150,7 @@ function HandSkeleton({ hand }: { hand: { landmarks: { x: number; y: number; z: 
   );
 }
 
-interface BuilderCanvasProps {
-  handTrackingResult: HandTrackingResult;
-}
-
-export function BuilderCanvas({ handTrackingResult }: BuilderCanvasProps) {
+export function BuilderCanvas() {
   const { bricks, selectedBrickId, currentBrickType, currentBrickColor, addBrick } = useBuilderStore();
   const [ghostBrick, setGhostBrick] = useState<{
     position: [number, number, number];
@@ -228,11 +224,6 @@ export function BuilderCanvas({ handTrackingResult }: BuilderCanvasProps) {
             rotation={ghostBrick.rotation}
             isPlaced={false}
           />
-          
-          {/* 手部骨骼 */}
-          {handTrackingResult.hands.map((hand, index) => (
-            <HandSkeleton key={index} hand={hand} />
-          ))}
         </Physics>
         <OrbitControls enableDamping dampingFactor={0.1} />
       </Canvas>
