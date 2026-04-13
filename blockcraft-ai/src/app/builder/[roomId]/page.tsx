@@ -10,21 +10,28 @@ export default function BuilderPage() {
   const [handTrackingResult, setHandTrackingResult] = useState<HandTrackingResult>({ hands: [], timestamp: Date.now() });
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+    <div className="min-h-screen gradient-bg text-foreground flex flex-col">
       {/* 顶部导航栏 */}
-      <header className="bg-gray-800/80 backdrop-blur-lg border-b border-gray-700 py-3 px-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="text-xl">🧱</div>
-          <h1 className="font-bold">BlockCraft AI</h1>
+      <header className="glass-panel border-b border-border py-4 px-8 flex justify-between items-center relative overflow-hidden">
+        {/* 装饰元素 */}
+        <div className="decorative-element bg-primary w-40 h-40 -translate-x-20 -translate-y-20"></div>
+        <div className="decorative-element bg-secondary w-60 h-60 translate-x-30 -translate-y-30"></div>
+        
+        <div className="flex items-center gap-3 relative z-10">
+          <div className="text-2xl">🧱</div>
+          <h1 className="text-xl font-bold tracking-tight gradient-text">
+            BlockCraft AI
+          </h1>
         </div>
-        <div className="flex items-center gap-4">
-          <button className="bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600 px-3 py-1 rounded-md text-sm">
-            保存
+        
+        <div className="flex items-center gap-4 relative z-10">
+          <button className="btn-secondary px-4 py-2 text-sm font-medium">
+            Save
           </button>
-          <button className="bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600 px-3 py-1 rounded-md text-sm">
-            分享
+          <button className="btn-primary px-4 py-2 text-sm font-medium">
+            Share
           </button>
-          <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/20">
             <span className="text-sm font-semibold">U</span>
           </div>
         </div>
@@ -33,39 +40,53 @@ export default function BuilderPage() {
       {/* 主内容区 */}
       <div className="flex flex-1 overflow-hidden">
         {/* 左侧面板 */}
-        <div className="w-64 bg-gray-800/80 backdrop-blur-lg border-r border-gray-700 p-4 flex flex-col gap-6">
-          <div>
-            <h3 className="font-semibold mb-3 text-gray-200">积木类型</h3>
-            <div className="grid grid-cols-2 gap-2">
+        <div className="w-72 glass-panel border-r border-border p-5 flex flex-col gap-8">
+          <div className="relative glass-panel inner-border">
+            <div className="absolute -top-3 left-4 bg-card px-2 text-sm font-medium">
+              Brick Types
+            </div>
+            <div className="grid grid-cols-2 gap-3 mt-2">
               {['1x1', '1x2', '2x2', '2x4', 'plate-1x2', 'plate-2x4'].map((type) => (
                 <button 
                   key={type} 
-                  className={`bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600 p-2 rounded-md text-center text-sm ${currentBrickType === type ? 'bg-indigo-600 text-white' : ''}`}
+                  className={`relative overflow-hidden group px-4 py-3 rounded-lg text-center text-sm font-medium transition-all duration-300 ${currentBrickType === type ? 'bg-gradient-to-r from-primary to-secondary text-primary-foreground' : 'btn-secondary'}`}
                   onClick={() => setCurrentBrickType(type as any)}
                 >
-                  {type}
+                  {currentBrickType === type && (
+                    <div className="absolute inset-0 bg-white/10 animate-pulse"></div>
+                  )}
+                  <span className="relative z-10">{type}</span>
                 </button>
               ))}
             </div>
           </div>
-          <div>
-            <h3 className="font-semibold mb-3 text-gray-200">颜色</h3>
-            <div className="grid grid-cols-5 gap-2">
+          
+          <div className="relative glass-panel inner-border">
+            <div className="absolute -top-3 left-4 bg-card px-2 text-sm font-medium">
+              Colors
+            </div>
+            <div className="grid grid-cols-5 gap-2 mt-2">
               {['#E3000B', '#0057A8', '#00852B', '#FFD700', '#FF6600', '#FFFFFF', '#1B2A34', '#A5499B', '#00BCD4', '#795548'].map((color) => (
                 <button 
                   key={color} 
-                  className={`w-8 h-8 rounded-md border-2 ${currentBrickColor === color ? 'border-white' : 'border-transparent hover:border-white'}`}
+                  className={`w-10 h-10 rounded-lg border-2 transition-all duration-300 ${currentBrickColor === color ? 'border-white shadow-lg shadow-white/20 scale-110' : 'border-transparent hover:border-white/50'}`}
                   style={{ backgroundColor: color }}
                   onClick={() => setCurrentBrickColor(color as any)}
                 />
               ))}
             </div>
           </div>
-          <div>
-            <h3 className="font-semibold mb-3 text-gray-200">工具</h3>
-            <div className="flex flex-col gap-2">
-              {['撤销', '重做', '删除', '清空'].map((tool) => (
-                <button key={tool} className="bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600 p-2 rounded-md text-center text-sm">
+          
+          <div className="relative glass-panel inner-border">
+            <div className="absolute -top-3 left-4 bg-card px-2 text-sm font-medium">
+              Tools
+            </div>
+            <div className="flex flex-col gap-2 mt-2">
+              {['Undo', 'Redo', 'Delete', 'Clear'].map((tool) => (
+                <button 
+                  key={tool} 
+                  className="btn-secondary px-4 py-3 text-center text-sm font-medium"
+                >
                   {tool}
                 </button>
               ))}
@@ -75,49 +96,81 @@ export default function BuilderPage() {
 
         {/* 中间 3D 画布 */}
         <div className="flex-1 relative">
+          {/* 装饰背景 */}
+          <div className="absolute inset-0 bg-background overflow-hidden">
+            <div className="decorative-element bg-primary w-96 h-96 top-1/4 left-1/4"></div>
+            <div className="decorative-element bg-secondary w-80 h-80 bottom-1/4 right-1/4"></div>
+          </div>
+          
           {/* 摄像头预览窗口（左上角） */}
-          <div className="absolute top-4 left-4 bg-gray-800/80 backdrop-blur-lg border border-gray-700 p-2 rounded-lg z-10">
+          <div className="absolute top-6 left-6 z-10 glass-panel inner-border shadow-lg shadow-black/30">
+            <div className="absolute -top-3 left-4 bg-card px-2 text-xs font-medium">
+              Camera
+            </div>
             <CameraFeed onResults={setHandTrackingResult} />
           </div>
+          
           <BuilderCanvas handTrackingResult={handTrackingResult} />
         </div>
 
         {/* 右侧面板 */}
-        <div className="w-64 bg-gray-800/80 backdrop-blur-lg border-l border-gray-700 p-4 flex flex-col gap-6">
-          <div>
-            <h3 className="font-semibold mb-3 text-gray-200">协作者</h3>
-            <div className="space-y-2">
-              {['用户1', '用户2', '用户3'].map((user) => (
-                <div key={user} className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-xs">
+        <div className="w-72 glass-panel border-l border-border p-5 flex flex-col gap-8">
+          <div className="relative glass-panel inner-border">
+            <div className="absolute -top-3 left-4 bg-card px-2 text-sm font-medium">
+              Collaborators
+            </div>
+            <div className="space-y-3 mt-2">
+              {['User 1', 'User 2', 'User 3'].map((user, index) => (
+                <div key={user} className="flex items-center gap-3 p-2 rounded-lg hover:bg-card/80 transition-all duration-300">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold" style={{ 
+                    background: index === 0 ? 'linear-gradient(135deg, #6366F1, #8B5CF6)' : 
+                              index === 1 ? 'linear-gradient(135deg, #EC4899, #F43F5E)' : 
+                              'linear-gradient(135deg, #10B981, #3B82F6)'
+                  }}>
                     {user.charAt(0)}
                   </div>
-                  <span className="text-sm text-gray-200">{user}</span>
+                  <span className="text-sm font-medium">{user}</span>
+                  <div className="ml-auto w-2 h-2 rounded-full bg-success"></div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="flex-1">
-            <h3 className="font-semibold mb-3 text-gray-200">聊天</h3>
-            <div className="bg-gray-700 rounded-md p-2 h-48 mb-2 overflow-y-auto">
-              <div className="space-y-2">
-                {['用户1: 大家好！', '用户2: 开始搭建吧', '用户3: 好的'].map((message, index) => (
-                  <div key={index} className="text-sm text-gray-300">{message}</div>
+          
+          <div className="relative glass-panel inner-border flex-1">
+            <div className="absolute -top-3 left-4 bg-card px-2 text-sm font-medium">
+              Chat
+            </div>
+            <div className="bg-card/50 rounded-lg p-3 h-64 mb-3 overflow-y-auto mt-2 scrollbar-hide">
+              <div className="space-y-3">
+                {['User 1: Hello everyone!', 'User 2: Let\'s start building', 'User 3: Okay'].map((message, index) => (
+                  <div key={index} className="p-2 rounded-lg bg-card/80">
+                    <div className="text-sm">{message}</div>
+                    <div className="text-xs text-muted-foreground mt-1">10:30 AM</div>
+                  </div>
                 ))}
               </div>
             </div>
             <div className="flex gap-2">
-              <input type="text" placeholder="输入消息..." className="flex-1 px-3 py-1 bg-gray-700 border border-gray-600 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-indigo-600 text-white" />
-              <button className="px-3 py-1 bg-indigo-600 rounded-md text-sm">发送</button>
+              <input 
+                type="text" 
+                placeholder="Type message..." 
+                className="flex-1 px-4 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300"
+              />
+              <button className="btn-primary px-4 py-2 text-sm font-medium">
+                Send
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       {/* 底部工具栏 */}
-      <footer className="bg-gray-800/80 backdrop-blur-lg border-t border-gray-700 py-2 px-6 flex justify-center gap-4">
-        {['手势指南', '撤销', '重做', '保存', '分享', '全屏'].map((item) => (
-          <button key={item} className="bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600 px-3 py-1 rounded-md text-sm">
+      <footer className="glass-panel border-t border-border py-3 px-8 flex justify-center gap-4">
+        {['Gesture Guide', 'Undo', 'Redo', 'Save', 'Share', 'Fullscreen'].map((item) => (
+          <button 
+            key={item} 
+            className="btn-secondary px-4 py-2 text-sm font-medium"
+          >
             {item}
           </button>
         ))}

@@ -3,65 +3,175 @@
 @tailwind utilities;
 
 :root {
-  --background: #09090B;
-  --foreground: #FAFAFA;
-  --card: #18181B;
-  --card-foreground: #FAFAFA;
-  --popover: #18181B;
-  --popover-foreground: #FAFAFA;
+  --background: #0F172A;
+  --foreground: #F8FAFC;
+  --card: #1E293B;
+  --card-foreground: #F8FAFC;
+  --popover: #1E293B;
+  --popover-foreground: #F8FAFC;
   --primary: #6366F1;
-  --primary-foreground: #FAFAFA;
+  --primary-foreground: #F8FAFC;
   --secondary: #8B5CF6;
-  --secondary-foreground: #FAFAFA;
-  --muted: #71717A;
-  --muted-foreground: #A1A1AA;
-  --accent: #6366F1;
-  --accent-foreground: #FAFAFA;
+  --secondary-foreground: #F8FAFC;
+  --muted: #64748B;
+  --muted-foreground: #94A3B8;
+  --accent: #4F46E5;
+  --accent-foreground: #F8FAFC;
   --destructive: #EF4444;
-  --destructive-foreground: #FAFAFA;
-  --border: rgba(255,255,255,0.1);
-  --input: rgba(255,255,255,0.1);
+  --destructive-foreground: #F8FAFC;
+  --border: #334155;
+  --input: #334155;
   --ring: #6366F1;
+  --radius: 0.75rem;
 }
 
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  overflow-x: hidden;
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-sans: antialiased;
+    overflow-x: hidden;
+  }
+  
+  * {
+    border-color: var(--border);
+  }
+  
+  div {
+    padding: 0.125rem;
+  }
 }
 
-.glass-panel {
-  background: rgba(24, 24, 27, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.3),
-    0 2px 4px -2px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+@layer components {
+  .glass-panel {
+    background-color: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.2),
+      0 4px 6px -4px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+  
+  .glass-button {
+    background-color: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+  }
+  
+  .glass-button:hover {
+    background-color: rgba(30, 41, 59, 0.8);
+    border-color: rgba(79, 70, 229, 0.5);
+    transform: translateY(-0.125rem);
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1);
+  }
+  
+  .gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, var(--primary), var(--secondary));
+  }
+  
+  .gradient-bg {
+    background-image: linear-gradient(to bottom right, var(--background), var(--card));
+  }
+  
+  .inner-border {
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+  
+  .decorative-element {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(48px);
+    opacity: 0.1;
+  }
+  
+  .btn-primary {
+    background-image: linear-gradient(to right, var(--primary), var(--secondary));
+    color: var(--primary-foreground);
+    font-weight: 500;
+    border-radius: 0.75rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.2);
+    background-image: linear-gradient(to right, rgba(99, 102, 241, 0.9), rgba(139, 92, 246, 0.9));
+  }
+  
+  .btn-secondary {
+    background-color: var(--card);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    font-weight: 500;
+    border-radius: 0.75rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-secondary:hover {
+    background-color: rgba(30, 41, 59, 0.8);
+    border-color: rgba(79, 70, 229, 0.5);
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1);
+  }
 }
 
-.glass-button {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.glass-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+@layer utilities {
+  .content-auto {
+    content-visibility: auto;
+  }
+  
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  
+  .backdrop-blur-xl {
+    backdrop-filter: blur(24px);
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -69,8 +179,15 @@ body {
   }
 }
 
-.fade-in {
-  animation: fadeIn 0.3s ease-out forwards;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pulse {
@@ -78,12 +195,8 @@ body {
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.7;
   }
-}
-
-.pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @keyframes float {
@@ -91,10 +204,23 @@ body {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-15px);
   }
 }
 
-.float {
-  animation: float 3s ease-in-out infinite;
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
 }

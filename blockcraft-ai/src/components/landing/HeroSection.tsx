@@ -14,7 +14,9 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-background-primary to-background-secondary z-0"></div>
+      {/* Decorative elements */}
+      <div className="decorative-element bg-primary w-[600px] h-[600px] -top-40 -left-40"></div>
+      <div className="decorative-element bg-secondary w-[500px] h-[500px] -bottom-40 -right-40"></div>
       
       {/* 3D 动画背景占位 */}
       <div className="absolute inset-0 z-0 opacity-30">
@@ -23,7 +25,7 @@ export function HeroSection() {
             {[...Array(6)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-16 h-16 bg-accent-primary rounded-md opacity-70"
+                className="absolute w-16 h-16 bg-primary rounded-md opacity-70"
                 initial={{ position: 'absolute', rotate: 0 }}
                 animate={{
                   rotate: 360,
@@ -42,8 +44,17 @@ export function HeroSection() {
       </div>
       
       <div className="container mx-auto px-4 z-10 text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          className="mb-4"
+        >
+          <div className="text-5xl mb-2">🧱</div>
+        </motion.div>
+        
         <motion.h1 
-          className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-accent-primary to-accent-secondary"
+          className="text-5xl md:text-7xl font-bold mb-6 gradient-text text-shadow-lg"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -52,25 +63,40 @@ export function HeroSection() {
         </motion.h1>
         
         <motion.p 
-          className="text-xl md:text-2xl text-text-secondary mb-10 max-w-3xl mx-auto"
+          className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          通过摄像头手势识别，在 3D 空间中搭建乐高风格积木，支持多人实时协作
+          Build Lego-style blocks in 3D space using camera gesture recognition, with real-time multiplayer collaboration
         </motion.p>
         
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <button 
-            className="glass-button px-8 py-4 text-lg font-semibold text-white rounded-full hover:bg-accent-primary transition-all"
+            className="btn-primary px-8 py-4 text-lg font-semibold rounded-full"
             onClick={handleStartBuilding}
           >
-            开始搭建
+            Start Building
           </button>
+          <button 
+            className="btn-secondary px-8 py-4 text-lg font-semibold rounded-full"
+          >
+            Watch Demo
+          </button>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          className="mt-16 text-sm text-muted-foreground"
+        >
+          <p>Powered by AI & WebXR Technology</p>
         </motion.div>
       </div>
     </section>
