@@ -3,7 +3,11 @@ import React, { useRef, useEffect, useState } from 'react';
 import { HandTracker } from '@/lib/gesture/hand-tracker';
 import { HandTrackingResult } from '@/types/gesture';
 
-export function CameraFeed() {
+interface CameraFeedProps {
+  onResults?: (results: HandTrackingResult) => void;
+}
+
+export function CameraFeed({ onResults }: CameraFeedProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
@@ -33,6 +37,10 @@ export function CameraFeed() {
     const handleHandTrackingResults = (results: HandTrackingResult) => {
       // 在这里处理手部追踪结果
       drawHandLandmarks(results);
+      // 调用回调函数，将结果传递给父组件
+      if (onResults) {
+        onResults(results);
+      }
     };
 
     const drawHandLandmarks = (results: HandTrackingResult) => {

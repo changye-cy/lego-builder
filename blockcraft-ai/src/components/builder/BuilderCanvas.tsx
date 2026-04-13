@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import { useBuilderStore } from '@/lib/store/builder-store';
 import { BrickType, BrickColor, BRICK_TEMPLATES } from '@/types/brick';
 import { createLegoBrickGeometry } from '@/lib/three/brick-geometry';
+import { HandTrackingResult } from '@/types/gesture';
 
 interface LegoBrickProps {
   id: string;
@@ -92,7 +93,68 @@ function Lighting() {
   );
 }
 
-export function BuilderCanvas() {
+// 手部骨骼组件
+function HandSkeleton({ hand }: { hand: { landmarks: { x: number; y: number; z: number }[]; handedness: 'Left' | 'Right' } }) {
+  const groupRef = useRef<THREE.Group>(null);
+  const { landmarks, handedness } = hand;
+
+  // 缩放和转换手部坐标到 3D 空间
+  useEffect(() => {
+    if (groupRef.current) {
+      // 将手部坐标从 [0,1] 映射到 3D 空间
+      const scale = 2;
+      const offsetX = landmarks[0].x * scale - scale / 2;
+      const offsetY = -landmarks[0].y * scale + scale / 2;
+      const offsetZ = 0;
+      
+      groupRef.current.position.set(offsetX, offsetY, offsetZ);
+    }
+  }, [landmarks]);
+
+  // 绘制手部骨骼
+  return (
+    <group ref={groupRef}>
+      {/* 骨骼连接 */}
+      {[
+        [0, 1], [1, 2], [2, 3], [3, 4], // 拇指
+        [0, 5], [5, 6], [6, 7], [7, 8], // 食指
+        [0, 9], [9, 10], [10, 11], [11, 12], // 中指
+        [0, 13], [13, 14], [14, 15], [15, 16], // 无名指
+        [0, 17], [17, 18], [18, 19], [19, 20]  // 小指
+      ].map(([start, end], index) => (
+        <line key={index}>
+          <bufferGeometry>
+              <bufferAttribute
+                attach="attributes-position"
+                args={[
+                  new Float32Array([
+                    landmarks[start].x * 2 - 1, -landmarks[start].y * 2 + 1, 0,
+                    landmarks[end].x * 2 - 1, -landmarks[end].y * 2 + 1, 0
+                  ]),
+                  3
+                ]}
+              />
+            </bufferGeometry>
+          <lineBasicMaterial color={handedness === 'Right' ? '#6366F1' : '#8B5CF6'} linewidth={2} />
+        </line>
+      ))}
+      
+      {/* 关键点 */}
+      {landmarks.map((landmark, index) => (
+        <mesh key={index} position={[landmark.x * 2 - 1, -landmark.y * 2 + 1, 0]}>
+          <sphereGeometry args={[0.05]} />
+          <meshBasicMaterial color="#10B981" />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+interface BuilderCanvasProps {
+  handTrackingResult: HandTrackingResult;
+}
+
+export function BuilderCanvas({ handTrackingResult }: BuilderCanvasProps) {
   const { bricks, selectedBrickId, currentBrickType, currentBrickColor, addBrick } = useBuilderStore();
   const [ghostBrick, setGhostBrick] = useState<{
     position: [number, number, number];
@@ -166,6 +228,11 @@ export function BuilderCanvas() {
             rotation={ghostBrick.rotation}
             isPlaced={false}
           />
+          
+          {/* 手部骨骼 */}
+          {handTrackingResult.hands.map((hand, index) => (
+            <HandSkeleton key={index} hand={hand} />
+          ))}
         </Physics>
         <OrbitControls enableDamping dampingFactor={0.1} />
       </Canvas>

@@ -1,11 +1,13 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { CameraFeed } from '@/components/builder/CameraFeed';
 import { BuilderCanvas } from '@/components/builder/BuilderCanvas';
 import { useBuilderStore } from '@/lib/store/builder-store';
+import { HandTrackingResult } from '@/types/gesture';
 
 export default function BuilderPage() {
   const { currentBrickType, currentBrickColor, setCurrentBrickType, setCurrentBrickColor } = useBuilderStore();
+  const [handTrackingResult, setHandTrackingResult] = useState<HandTrackingResult>({ hands: [], timestamp: Date.now() });
 
   return (
     <div className="min-h-screen bg-background-primary flex flex-col">
@@ -73,12 +75,11 @@ export default function BuilderPage() {
 
         {/* 中间 3D 画布 */}
         <div className="flex-1 relative">
-          <BuilderCanvas />
-          
-          {/* 摄像头预览窗口 */}
-          <div className="absolute bottom-4 left-4 glass-panel p-2 rounded-lg">
-            <CameraFeed />
+          {/* 摄像头预览窗口（左上角） */}
+          <div className="absolute top-4 left-4 glass-panel p-2 rounded-lg z-10">
+            <CameraFeed onResults={setHandTrackingResult} />
           </div>
+          <BuilderCanvas handTrackingResult={handTrackingResult} />
         </div>
 
         {/* 右侧面板 */}
